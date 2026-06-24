@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>44 Tshirts — Catálogo Atacado</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+:root{
+  --preto:#0E0E0E;--ouro:#BFA054;--ouro-brilho:#D4B46A;
+  --branco:#FFFFFF;--off:#F7F5F2;--cinza-leve:#EFEFEF;
+  --cinza:#999;--texto:#1A1A1A;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:'Inter',sans-serif;background:var(--off);color:var(--texto);min-height:100vh;max-width:480px;margin:0 auto}
+
+/* HEADER */
+.header{background:var(--preto);padding:18px 20px 14px;position:sticky;top:0;z-index:100}
+.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.logo{display:flex;align-items:baseline;gap:4px}
+.logo-num{font-size:26px;font-weight:900;color:var(--ouro);letter-spacing:-0.04em;line-height:1}
+.logo-text{font-size:11px;font-weight:600;color:#888;letter-spacing:0.18em;text-transform:uppercase}
+.badge-novo{background:var(--ouro);color:var(--preto);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border-radius:20px;display:none;animation:pulse 2.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
+.semana-banner{background:linear-gradient(90deg,rgba(191,160,84,.15),rgba(191,160,84,.05));border:1px solid rgba(191,160,84,.3);border-radius:8px;padding:8px 12px;display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.semana-label{font-size:11px;font-weight:600;color:var(--ouro-brilho);letter-spacing:.06em;text-transform:uppercase}
+.semana-data{font-size:11px;color:#666}
+.cats-wrap{display:flex;gap:8px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.cats-wrap::-webkit-scrollbar{display:none}
+.cat-pill{white-space:nowrap;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid #333;color:#888;background:transparent;transition:all .18s;flex-shrink:0}
+.cat-pill.active{background:var(--ouro);border-color:var(--ouro);color:var(--preto)}
+
+/* TOGGLE */
+.toggle-bar{background:var(--branco);border-bottom:1px solid var(--cinza-leve);padding:10px 20px;display:flex;align-items:center;gap:10px}
+.toggle-label{font-size:12px;font-weight:600;color:var(--cinza)}
+.toggle{position:relative;width:40px;height:22px;cursor:pointer}
+.toggle input{display:none}
+.toggle-track{position:absolute;inset:0;background:#ddd;border-radius:20px;transition:background .2s}
+.toggle input:checked+.toggle-track{background:var(--ouro)}
+.toggle-thumb{position:absolute;width:16px;height:16px;background:white;border-radius:50%;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.toggle input:checked~.toggle-thumb{transform:translateX(18px)}
+.toggle-count{margin-left:auto;font-size:11px;color:var(--cinza)}
+.count-dest{color:var(--ouro);font-weight:700}
+
+/* LOADING */
+.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;gap:14px}
+.spinner{width:36px;height:36px;border:3px solid var(--cinza-leve);border-top-color:var(--ouro);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading p{font-size:13px;color:var(--cinza);font-weight:500}
+
+/* ERRO */
+.erro{display:none;flex-direction:column;align-items:center;padding:60px 24px;text-align:center;gap:10px}
+.erro-icon{font-size:36px}
+.erro h3{font-size:15px;font-weight:700}
+.erro p{font-size:13px;color:var(--cinza);line-height:1.6;max-width:280px}
+.btn-retry{margin-top:8px;background:var(--ouro);color:var(--preto);border:none;border-radius:20px;padding:10px 22px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px}
+
+/* CARD */
+.card{background:var(--branco);border-radius:14px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.06);cursor:pointer;position:relative;transition:transform .15s,box-shadow .15s}
+.card:active{transform:scale(.97)}
+.card-img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;background:var(--cinza-leve)}
+.card-img-erro{width:100%;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;font-size:32px;color:#ccc;background:var(--cinza-leve)}
+.card-tag-novo{position:absolute;top:10px;left:10px;background:var(--preto);color:var(--ouro);font-size:9px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;padding:3px 8px;border-radius:20px}
+.card-info{padding:10px 12px 12px}
+.card-sku{font-size:10px;font-weight:500;color:var(--cinza);letter-spacing:.06em;margin-bottom:1px}
+.card-cor{font-size:13px;font-weight:700;color:var(--texto);margin-bottom:8px;text-transform:uppercase}
+.card-hr{height:1px;background:var(--cinza-leve);margin-bottom:8px}
+.card-preco{font-size:16px;font-weight:800;color:var(--preto);letter-spacing:-.02em}
+.card-min{font-size:10px;color:var(--cinza);margin-top:2px}
+
+/* EMPTY */
+.empty{display:none;flex-direction:column;align-items:center;padding:60px 20px;text-align:center;color:var(--cinza);gap:8px}
+.empty.show{display:flex}
+.empty span{font-size:36px}
+.empty p{font-size:14px;font-weight:500}
+
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:200;align-items:flex-end;max-width:480px;margin:0 auto}
+.overlay.show{display:flex}
+.modal{background:var(--branco);border-radius:20px 20px 0 0;width:100%;max-height:90vh;overflow-y:auto;padding-bottom:32px}
+.modal-handle{width:36px;height:4px;background:var(--cinza-leve);border-radius:2px;margin:14px auto 0}
+.modal-img{width:100%;aspect-ratio:3/4;object-fit:cover;display:block;margin-top:16px}
+.modal-img-erro{width:100%;aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;font-size:56px;color:#ccc;background:var(--cinza-leve);margin-top:16px}
+.modal-body{padding:20px 20px 0}
+.modal-cat{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ouro);margin-bottom:4px}
+.modal-cor{font-size:22px;font-weight:800;letter-spacing:-.02em}
+.modal-sku{font-size:12px;color:var(--cinza);margin-bottom:20px}
+.modal-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.mc{background:var(--off);border-radius:10px;padding:14px}
+.mc-label{font-size:10px;font-weight:600;color:var(--cinza);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.mc-val{font-size:20px;font-weight:800;letter-spacing:-.02em}
+.mc-sub{font-size:11px;color:var(--cinza);margin-top:2px}
+.modal-dica{background:linear-gradient(90deg,rgba(191,160,84,.12),transparent);border-left:3px solid var(--ouro);border-radius:0 8px 8px 0;padding:12px 14px;font-size:12px;color:#555;line-height:1.6}
+
+.bottom-pad{height:32px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.card{animation:fadeUp .2s ease both}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-top">
+    <div class="logo">
+      <span class="logo-num">44</span>
+      <span class="logo-text">Tshirts</span>
+    </div>
+    <div class="badge-novo" id="badge-novo">✦ Novo lançamento</div>
+  </div>
+  <div class="semana-banner">
+    <span class="semana-label">✦ Lançamento desta semana</span>
+    <span class="semana-data" id="data-semana"></span>
+  </div>
+  <div class="cats-wrap" id="cats">
+    <div class="cat-pill active" onclick="filtrar('todas',this)">Todas</div>
+  </div>
+</header>
+
+<div class="toggle-bar">
+  <span class="toggle-label">Só novidades</span>
+  <label class="toggle">
+    <input type="checkbox" id="toggle-novo" onchange="filtrarNovos()">
+    <div class="toggle-track"></div>
+    <div class="toggle-thumb"></div>
+  </label>
+  <span class="toggle-count"><span class="count-dest" id="novo-count">0</span> novas esta semana</span>
+</div>
+
+<div class="loading" id="loading">
+  <div class="spinner"></div>
+  <p>Carregando catálogo...</p>
+</div>
+
+<div class="erro" id="erro">
+  <div class="erro-icon">😕</div>
+  <h3>Não conseguimos carregar</h3>
+  <p>Verifique se a API do Bling está configurada corretamente no Vercel.</p>
+  <button class="btn-retry" onclick="init()">Tentar novamente</button>
+</div>
+
+<div class="grid" id="grid"></div>
+<div class="empty" id="empty"><span>🔍</span><p>Nenhum produto nessa categoria</p></div>
+<div class="bottom-pad"></div>
+
+<div class="overlay" id="overlay" onclick="fecharModal(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div id="modal-img-wrap"></div>
+    <div class="modal-body">
+      <div class="modal-cat" id="m-cat"></div>
+      <div class="modal-cor" id="m-cor"></div>
+      <div class="modal-sku" id="m-sku"></div>
+      <div class="modal-cards">
+        <div class="mc"><div class="mc-label">Preço atacado</div><div class="mc-val" id="m-preco"></div><div class="mc-sub">por peça</div></div>
+        <div class="mc"><div class="mc-label">Mínimo</div><div class="mc-val" id="m-min"></div><div class="mc-sub">peças por cor</div></div>
+      </div>
+      <div class="modal-dica">📸 Tire um print desta tela e envie para sua vendedora para fazer o pedido.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CONFIGURAÇÃO ──────────────────────────────────────────────
+// Em produção, aponta para /api/produtos do próprio Vercel
+// Em desenvolvimento local, troque pela URL do seu Vercel
+const API_URL = '/api/produtos';
+// ─────────────────────────────────────────────────────────────
+
+const EMOJI_CAT = { Bordada:'🌸', Cristã:'✝️', Country:'🤠', Personagem:'🐻', Animais:'🐆', Farm:'🌻' };
+
+let todos     = [];
+let catAtiva  = 'todas';
+let soNovos   = false;
+let cats      = new Set();
+
+// Data da semana no banner
+const d = new Date();
+document.getElementById('data-semana').textContent =
+  d.toLocaleDateString('pt-BR',{weekday:'short',day:'2-digit',month:'short'});
+
+// ── INIT ──────────────────────────────────────────────────────
+async function init() {
+  mostrar('loading');
+  try {
+    const resp = await fetch(API_URL);
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const data = await resp.json();
+
+    todos = data.produtos || [];
+    cats  = new Set(todos.map(p => p.categoria).filter(Boolean).sort());
+
+    // Monta pills de categoria dinamicamente
+    const wrap = document.getElementById('cats');
+    wrap.innerHTML = '<div class="cat-pill active" onclick="filtrar(\'todas\',this)">Todas</div>';
+    cats.forEach(cat => {
+      const el = document.createElement('div');
+      el.className = 'cat-pill';
+      el.textContent = cat;
+      el.onclick = function(){ filtrar(cat, this); };
+      wrap.appendChild(el);
+    });
+
+    const novos = todos.filter(p => p.novo).length;
+    document.getElementById('novo-count').textContent = novos;
+    if (novos > 0) document.getElementById('badge-novo').style.display = 'block';
+
+    mostrar('grid');
+    render();
+  } catch(err) {
+    console.error(err);
+    mostrar('erro');
+  }
+}
+
+function mostrar(qual) {
+  ['loading','erro','grid','empty'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (id === 'grid' || id === 'empty') { el.classList.remove('show'); }
+    else { el.style.display = 'none'; }
+  });
+  const alvo = document.getElementById(qual);
+  if (!alvo) return;
+  if (qual === 'grid' || qual === 'empty') alvo.classList.add('show');
+  else alvo.style.display = qual === 'grid' ? 'grid' : 'flex';
+}
+
+// ── RENDER ────────────────────────────────────────────────────
+function render() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+
+  const filtrados = todos.filter(p => {
+    const catOk  = catAtiva === 'todas' || p.categoria === catAtiva;
+    const novoOk = !soNovos || p.novo;
+    return catOk && novoOk;
+  });
+
+  if (filtrados.length === 0) { mostrar('empty'); return; }
+  mostrar('grid');
+
+  filtrados.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.animationDelay = Math.min(i * 0.035, 0.4) + 's';
+    card.onclick = () => abrirModal(p);
+
+    const emoji = EMOJI_CAT[p.categoria] || '👕';
+
+    card.innerHTML = `
+      ${p.novo ? '<div class="card-tag-novo">✦ Novo</div>' : ''}
+      ${p.fotoUrl
+        ? `<img class="card-img" src="${p.fotoUrl}" alt="${p.cor}" loading="lazy"
+             onerror="this.outerHTML='<div class=card-img-erro>${emoji}</div>'">`
+        : `<div class="card-img-erro">${emoji}</div>`
+      }
+      <div class="card-info">
+        <div class="card-sku">SKU ${p.sku}</div>
+        <div class="card-cor">${p.cor || p.nome}</div>
+        <div class="card-hr"></div>
+        <div class="card-preco">${p.preco}</div>
+        <div class="card-min">Mín. ${p.min} peças</div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+// ── FILTROS ───────────────────────────────────────────────────
+function filtrar(cat, el) {
+  catAtiva = cat;
+  document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  render();
+}
+
+function filtrarNovos() {
+  soNovos = document.getElementById('toggle-novo').checked;
+  render();
+}
+
+// ── MODAL ─────────────────────────────────────────────────────
+function abrirModal(p) {
+  const emoji = EMOJI_CAT[p.categoria] || '👕';
+  document.getElementById('m-cat').textContent   = (p.categoria || '').toUpperCase();
+  document.getElementById('m-cor').textContent   = p.cor || p.nome;
+  document.getElementById('m-sku').textContent   = 'SKU ' + p.sku;
+  document.getElementById('m-preco').textContent = p.preco;
+  document.getElementById('m-min').textContent   = p.min + ' pç';
+
+  document.getElementById('modal-img-wrap').innerHTML = p.fotoUrl
+    ? `<img class="modal-img" src="${p.fotoUrl}" alt="${p.cor}"
+         onerror="this.outerHTML='<div class=modal-img-erro>${emoji}</div>'">`
+    : `<div class="modal-img-erro">${emoji}</div>`;
+
+  document.getElementById('overlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+
+function fecharModal(e) {
+  if (e.target === document.getElementById('overlay')) {
+    document.getElementById('overlay').classList.remove('show');
+    document.body.style.overflow = '';
+  }
+}
+
+init();
+</script>
+</body>
+</html>
