@@ -32,7 +32,9 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') { res.status(200).end(); return; }
   if (req.method !== 'GET') { res.status(405).json({ erro: 'Método não permitido' }); return; }
 
-  const { BLING_CLIENT_ID, BLING_CLIENT_SECRET, BLING_REFRESH_TOKEN } = process.env;
+  const BLING_CLIENT_ID = process.env.BLING_CLIENT_ID || process.env.ID_DO_CLIENTE_BLING;
+  const BLING_CLIENT_SECRET = process.env.BLING_CLIENT_SECRET;
+  const BLING_REFRESH_TOKEN = process.env.BLING_REFRESH_TOKEN;
 
   if (!BLING_CLIENT_ID || !BLING_CLIENT_SECRET) {
     return res.status(500).json({ erro: 'BLING_CLIENT_ID ou BLING_CLIENT_SECRET não configurados no Vercel.' });
