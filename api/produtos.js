@@ -75,8 +75,8 @@ async function getAccessToken(clientId, clientSecret, refreshToken) {
 
   const data = await resp.json();
 
-  if (!data.access_token) {
-    throw new Error('Não foi possível obter o access token. Verifique o BLING_REFRESH_TOKEN.');
+   if (!data.access_token) {
+    throw new Error('Bling respondeu: ' + JSON.stringify(data) + ' (status ' + resp.status + ')');
   }
 
   return data.access_token;
